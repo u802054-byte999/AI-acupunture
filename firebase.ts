@@ -1,8 +1,8 @@
 
 // FIX: The error indicates a mismatch between Firebase SDK version and import syntax.
 // Switched to Firebase v8 namespaced syntax for compatibility.
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 // IMPORTANT: Replace this with your own Firebase configuration
 // Go to your Firebase project console -> Project Settings -> General -> Your apps -> Web app -> Config
