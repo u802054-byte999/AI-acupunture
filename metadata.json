@@ -1,0 +1,7 @@
+{
+  "name": "智慧記針小幫手 (Smart Acupuncture Assistant)",
+  "description": "An application to help manage and record patient acupuncture treatments, including needle counts, acupoints, and treatment times, with a simple Android-style interface.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
