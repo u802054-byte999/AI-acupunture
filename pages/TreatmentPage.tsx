@@ -39,9 +39,9 @@ const partPairs: [BodyPart, BodyPart][] = [
 const TreatmentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch, addTreatment, updateTreatment, completeRemoval } = useAppContext();
   
-  const patient = useMemo(() => state.patients.find(p => p.id === Number(id)), [state.patients, id]);
+  const patient = useMemo(() => state.patients.find(p => p.id === id), [state.patients, id]);
   const physiciansForTeam = useMemo(() => patient ? (state.settings.physicians[patient.team] || []) : [], [patient, state.settings]);
 
   const [needleCounts, setNeedleCounts] = useState<Record<BodyPart, number>>(() => 
@@ -50,17 +50,17 @@ const TreatmentPage: React.FC = () => {
   const [needleCountsHistory, setNeedleCountsHistory] = useState<Record<BodyPart, number>[]>([]);
   const [attendingPhysician, setAttendingPhysician] = useState<string | undefined>(undefined);
   const [editingSession, setEditingSession] = useState<TreatmentSession | null>(null);
-  const [confirmingRemoval, setConfirmingRemoval] = useState<number | null>(null);
+  const [confirmingRemoval, setConfirmingRemoval] = useState<string | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
 
   useEffect(() => {
-    if (!patient) {
+    if (!state.loading && !patient) {
       navigate('/');
-    } else if (!editingSession) {
+    } else if (!editingSession && patient) {
        setAttendingPhysician(physiciansForTeam.length > 0 ? physiciansForTeam[0] : undefined);
     }
-  }, [patient, navigate, physiciansForTeam, editingSession]);
+  }, [patient, navigate, physiciansForTeam, editingSession, state.loading]);
 
   const totalNeedles = useMemo(() => Object.values(needleCounts).reduce((sum, count) => sum + count, 0), [needleCounts]);
 
@@ -84,7 +84,8 @@ const TreatmentPage: React.FC = () => {
     setNeedleCountsHistory([]);
   };
 
-  const handleSaveOrUpdate = () => {
+  const handleSaveOrUpdate = async () => {
+    if (!id) return;
     if (totalNeedles === 0) {
       alert('總針數不能為0');
       return;
@@ -102,7 +103,7 @@ const TreatmentPage: React.FC = () => {
         acupoints: state.selectedAcupoints,
         attendingPhysician,
       };
-      dispatch({ type: 'UPDATE_TREATMENT', payload: { patientId: Number(id), session: updatedSession }});
+      await updateTreatment(id, updatedSession);
       alert('治療紀錄已更新！');
       clearForm();
     } else {
@@ -113,7 +114,7 @@ const TreatmentPage: React.FC = () => {
         acupoints: state.selectedAcupoints,
         attendingPhysician,
       };
-      dispatch({ type: 'ADD_TREATMENT', payload: { patientId: Number(id), session: newSession } });
+      await addTreatment(id, newSession);
       dispatch({ type: 'SET_SELECTED_ACUPOINTS', payload: [] });
       navigate('/');
     }
@@ -128,13 +129,13 @@ const TreatmentPage: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleCompleteRemovalClick = (sessionId: number) => {
+  const handleCompleteRemovalClick = (sessionId: string) => {
     setConfirmingRemoval(sessionId);
   };
 
-  const confirmCompleteRemoval = () => {
-    if (confirmingRemoval) {
-      dispatch({ type: 'COMPLETE_REMOVAL', payload: { patientId: Number(id), sessionId: confirmingRemoval } });
+  const confirmCompleteRemoval = async () => {
+    if (confirmingRemoval && id) {
+      await completeRemoval(id, confirmingRemoval);
       setConfirmingRemoval(null);
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 3000);

@@ -8,8 +8,8 @@ import QrScannerComponent from '../components/QrScannerComponent';
 
 interface PatientCardProps {
   patient: Patient;
-  onCompleteRemoval: (patientId: number, sessionId: number) => void;
-  onDeletePatient: (patientId: number, patientName: string) => void;
+  onCompleteRemoval: (patientId: string, sessionId: string) => void;
+  onDeletePatient: (patientId: string, patientName: string) => void;
 }
 
 const bodyPartDisplayNameMap = {
@@ -114,14 +114,14 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient, onCompleteRemoval, o
 
 
 const PatientListPage: React.FC = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, completeRemoval, deletePatient } = useAppContext();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTeam, setFilterTeam] = useState<number | 'all'>('all');
   const [sortBy, setSortBy] = useState<'bedNumber' | 'treatmentTime' | 'removalTime'>('bedNumber');
   const [isScanning, setIsScanning] = useState(false);
-  const [confirmingRemovalInfo, setConfirmingRemovalInfo] = useState<{ patientId: number, sessionId: number } | null>(null);
-  const [deletingPatientInfo, setDeletingPatientInfo] = useState<{ id: number; name: string } | null>(null);
+  const [confirmingRemovalInfo, setConfirmingRemovalInfo] = useState<{ patientId: string, sessionId: string } | null>(null);
+  const [deletingPatientInfo, setDeletingPatientInfo] = useState<{ id: string; name: string } | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
 
@@ -130,26 +130,26 @@ const PatientListPage: React.FC = () => {
     setIsScanning(false);
   };
   
-  const handleCompleteRemovalClick = (patientId: number, sessionId: number) => {
+  const handleCompleteRemovalClick = (patientId: string, sessionId: string) => {
     setConfirmingRemovalInfo({ patientId, sessionId });
   };
 
-  const confirmCompleteRemoval = () => {
+  const confirmCompleteRemoval = async () => {
     if (confirmingRemovalInfo) {
-      dispatch({ type: 'COMPLETE_REMOVAL', payload: confirmingRemovalInfo });
+      await completeRemoval(confirmingRemovalInfo.patientId, confirmingRemovalInfo.sessionId);
       setConfirmingRemovalInfo(null);
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 3000);
     }
   };
 
-  const handleDeletePatient = (patientId: number, patientName: string) => {
+  const handleDeletePatient = (patientId: string, patientName: string) => {
     setDeletingPatientInfo({ id: patientId, name: patientName });
   };
 
-  const confirmDeletePatient = () => {
+  const confirmDeletePatient = async () => {
     if (deletingPatientInfo) {
-      dispatch({ type: 'DELETE_PATIENT', payload: deletingPatientInfo.id });
+      await deletePatient(deletingPatientInfo.id);
       setDeletingPatientInfo(null);
     }
   };
@@ -188,6 +188,14 @@ const PatientListPage: React.FC = () => {
 
     return patients;
   }, [state.patients, searchTerm, filterTeam, sortBy]);
+
+  if (state.loading) {
+      return (
+          <div className="flex justify-center items-center min-h-screen">
+              <div className="text-xl font-semibold">載入中...</div>
+          </div>
+      )
+  }
 
   return (
     <div className="pb-16">

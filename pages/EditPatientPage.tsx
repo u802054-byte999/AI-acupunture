@@ -7,21 +7,21 @@ import { TEAMS } from '../constants';
 
 const EditPatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { state, dispatch } = useAppContext();
+  const { state, updatePatient } = useAppContext();
   const navigate = useNavigate();
   
-  const patientToEdit = state.patients.find(p => p.id === Number(id));
+  const patientToEdit = state.patients.find(p => p.id === id);
 
   const [patient, setPatient] = useState<Patient | null>(null);
 
   useEffect(() => {
     if (patientToEdit) {
       setPatient(patientToEdit);
-    } else {
+    } else if (!state.loading) {
       // Patient not found, redirect to home
       navigate('/');
     }
-  }, [patientToEdit, navigate]);
+  }, [patientToEdit, navigate, state.loading]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (!patient) return;
@@ -33,17 +33,21 @@ const EditPatientPage: React.FC = () => {
     return patient && patient.medicalRecordNumber && patient.name && patient.bedNumber;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isFormValid() || !patient) {
       alert('請填寫所有必填欄位！');
       return;
     }
-    dispatch({ type: 'UPDATE_PATIENT', payload: patient });
+    await updatePatient(patient);
     navigate('/');
   };
 
   if (!patient) {
-    return null; // or a loading spinner
+    return (
+        <div className="flex justify-center items-center min-h-screen">
+            <div className="text-xl font-semibold">載入中...</div>
+        </div>
+    );
   }
 
   return (

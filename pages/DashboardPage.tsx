@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Settings } from '../types';
@@ -6,9 +6,13 @@ import Header from '../components/Header';
 import { TEAMS } from '../constants';
 
 const DashboardPage: React.FC = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, updateSettings } = useAppContext();
   const navigate = useNavigate();
   const [settings, setSettings] = useState<Settings>(state.settings);
+
+  useEffect(() => {
+    setSettings(state.settings);
+  }, [state.settings]);
 
   const handlePhysicianChange = (team: number, index: number, name: string) => {
     const newPhysicians = { ...settings.physicians };
@@ -22,8 +26,9 @@ const DashboardPage: React.FC = () => {
       setSettings(prev => ({...prev, acupointNames: newAcupointNames}));
   }
 
-  const handleSave = () => {
-    dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
+  const handleSave = async () => {
+    await updateSettings(settings);
+    alert('設定已儲存！');
     navigate('/');
   };
 

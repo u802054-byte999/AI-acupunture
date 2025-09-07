@@ -7,7 +7,7 @@ import QrScannerComponent from '../components/QrScannerComponent';
 import { TEAMS } from '../constants';
 
 const AddPatientPage: React.FC = () => {
-  const { dispatch } = useAppContext();
+  const { addPatient } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,22 +34,18 @@ const AddPatientPage: React.FC = () => {
     return patient.medicalRecordNumber && patient.name && patient.bedNumber;
   };
 
-  const handleSubmit = (addNext: boolean) => {
+  const handleSubmit = async (addNext: boolean) => {
     if (!isFormValid()) {
       alert('請填寫所有必填欄位！');
       return;
     }
-    const newPatient: Patient = {
-      ...patient,
-      id: Date.now(),
-      treatments: [],
-    };
-    dispatch({ type: 'ADD_PATIENT', payload: newPatient });
+    await addPatient(patient);
     
     if (addNext) {
+      const currentTeam = patient.team;
       setPatient(getInitialState());
       // Keep the same team for the next entry
-      setPatient(prev => ({ ...prev, team: patient.team }));
+      setPatient(prev => ({ ...prev, team: currentTeam }));
     } else {
       navigate('/');
     }
