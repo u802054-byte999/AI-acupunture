@@ -55,6 +55,10 @@ const TreatmentPage: React.FC = () => {
 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!state.loading && !patient) {
       navigate('/');
     } else if (!editingSession && patient) {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Patient, TreatmentSession, BodyPart } from '../types';
@@ -124,6 +124,9 @@ const PatientListPage: React.FC = () => {
   const [deletingPatientInfo, setDeletingPatientInfo] = useState<{ id: string; name: string } | null>(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleScan = (data: string) => {
     setSearchTerm(data);
