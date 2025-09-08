@@ -217,7 +217,7 @@ const PatientListPage: React.FC = () => {
           <input
             type="text"
             placeholder="搜尋患者姓名或病歷號"
-            className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 pr-12"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 pr-16"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -226,7 +226,7 @@ const PatientListPage: React.FC = () => {
             className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-600 hover:text-blue-600 mb-4"
             aria-label="Scan QR Code"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2M9 9h6v6H9V9z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2M9 9h6v6H9V9z" /></svg>
           </button>
         </div>
 
