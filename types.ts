@@ -1,4 +1,6 @@
 
+import type { Dispatch } from 'react';
+
 export enum BodyPart {
   Head = '頭部',
   Torso = '軀幹',
@@ -51,7 +53,8 @@ export type AppAction =
 
 export interface AppContextType {
   state: AppState;
-  dispatch: React.Dispatch<AppAction>;
+  // FIX: Use Dispatch type from react to resolve namespace error.
+  dispatch: Dispatch<AppAction>;
   addPatient: (patient: Omit<Patient, 'id' | 'treatments'>) => Promise<void>;
   updatePatient: (patient: Patient) => Promise<void>;
   deletePatient: (patientId: string) => Promise<void>;

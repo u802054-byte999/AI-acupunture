@@ -7,7 +7,7 @@ import QrScannerComponent from '../components/QrScannerComponent';
 import { TEAMS } from '../constants';
 
 const AddPatientPage: React.FC = () => {
-  const { addPatient } = useAppContext();
+  const { addPatient, state } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const AddPatientPage: React.FC = () => {
   };
 
   const isFormValid = () => {
-    return patient.medicalRecordNumber && patient.name && patient.bedNumber;
+    return patient.medicalRecordNumber.trim() && patient.name.trim() && patient.bedNumber.trim();
   };
 
   const handleSubmit = async (addNext: boolean) => {
@@ -39,7 +39,22 @@ const AddPatientPage: React.FC = () => {
       alert('請填寫所有必填欄位！');
       return;
     }
-    await addPatient(patient);
+    
+    const patientDataToSave = {
+      medicalRecordNumber: patient.medicalRecordNumber.trim(),
+      name: patient.name.trim(),
+      gender: patient.gender,
+      bedNumber: patient.bedNumber.trim(),
+      team: patient.team,
+    };
+
+    const existingPatient = state.patients.find(p => p.medicalRecordNumber === patientDataToSave.medicalRecordNumber);
+    if (existingPatient) {
+      alert(`病歷號 ${patientDataToSave.medicalRecordNumber} 已存在。\n\n患者姓名: ${existingPatient.name}\n床號: ${existingPatient.bedNumber}`);
+      return;
+    }
+
+    await addPatient(patientDataToSave);
     
     if (addNext) {
       const currentTeam = patient.team;

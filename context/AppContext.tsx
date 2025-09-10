@@ -1,5 +1,5 @@
 
-import React, { createContext, useReducer, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useReducer, useContext, useEffect, PropsWithChildren } from 'react';
 import { AppState, AppAction, AppContextType, Patient, TreatmentSession, Settings } from '../types';
 import { INITIAL_SETTINGS } from '../constants';
 import { db } from '../firebase';
@@ -32,7 +32,8 @@ const initialState: AppState = {
   loading: true,
 };
 
-export const AppProvider = ({ children }: { children: ReactNode }) => {
+// FIX: Use PropsWithChildren to correctly type the children prop and resolve error in App.tsx.
+export const AppProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {

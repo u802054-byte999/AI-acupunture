@@ -230,7 +230,7 @@ const PatientListPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-4 text-sm">
+        <div className="flex flex-wrap items-center gap-2 mb-4 text-sm">
           <select onChange={e => setFilterTeam(e.target.value === 'all' ? 'all' : Number(e.target.value))} value={filterTeam} className="p-2 border rounded-lg bg-white text-black">
             <option value="all">所有組別</option>
             {TEAMS.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
@@ -240,6 +240,9 @@ const PatientListPage: React.FC = () => {
             <option value="treatmentTime">依治療時間排序</option>
             <option value="removalTime">依拔針時間排序</option>
           </select>
+          <span className="text-gray-700 font-medium">
+            人數：{filteredAndSortedPatients.length}
+          </span>
         </div>
         <div>
           {filteredAndSortedPatients.map(p => 

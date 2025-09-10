@@ -66,7 +66,8 @@ const TreatmentPage: React.FC = () => {
     }
   }, [patient, navigate, physiciansForTeam, editingSession, state.loading]);
 
-  const totalNeedles = useMemo(() => Object.values(needleCounts).reduce((sum, count) => sum + count, 0), [needleCounts]);
+  // FIX: Explicitly type the accumulator `sum` to `number` to resolve a type inference issue where it was being treated as 'unknown'.
+  const totalNeedles = useMemo(() => Object.values(needleCounts).reduce((sum: number, count) => sum + Number(count), 0), [needleCounts]);
 
   const handleNeedleChange = (part: BodyPart, newCount: number) => {
     setNeedleCountsHistory(prev => [...prev, needleCounts]);
