@@ -34,6 +34,7 @@ export interface Settings {
   acupointCount: number;
   acupointNames: Record<number, string>;
   physicians: Record<number, string[]>; // team number -> [physician1, physician2, physician3]
+  teamCount: number;
 }
 
 export interface AppState {

@@ -1,15 +1,16 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Patient } from '../types';
 import Header from '../components/Header';
 import QrScannerComponent from '../components/QrScannerComponent';
-import { TEAMS } from '../constants';
 
 const AddPatientPage: React.FC = () => {
   const { addPatient, state } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const teams = Array.from({ length: state.settings.teamCount || 10 }, (_, i) => i + 1);
 
   const getInitialState = () => ({
     medicalRecordNumber: '',
@@ -95,7 +96,7 @@ const AddPatientPage: React.FC = () => {
         <div className="bg-white p-4 rounded-lg shadow">
           <label className="block text-gray-700">組別</label>
           <select name="team" value={patient.team} onChange={handleChange} className="w-full p-2 border rounded mt-1 bg-white text-black">
-            {TEAMS.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
+            {teams.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
           </select>
         </div>
         <div className="flex space-x-4 pt-4">

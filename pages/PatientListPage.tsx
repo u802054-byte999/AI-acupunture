@@ -1,9 +1,9 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Patient, TreatmentSession, BodyPart } from '../types';
 import Header from '../components/Header';
-import { TEAMS } from '../constants';
 import QrScannerComponent from '../components/QrScannerComponent';
 
 interface PatientCardProps {
@@ -128,6 +128,8 @@ const PatientListPage: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const teams = Array.from({ length: state.settings.teamCount || 10 }, (_, i) => i + 1);
+
   const handleScan = (data: string) => {
     setSearchTerm(data);
     setIsScanning(false);
@@ -233,7 +235,7 @@ const PatientListPage: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 mb-4 text-sm">
           <select onChange={e => setFilterTeam(e.target.value === 'all' ? 'all' : Number(e.target.value))} value={filterTeam} className="p-2 border rounded-lg bg-white text-black">
             <option value="all">所有組別</option>
-            {TEAMS.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
+            {teams.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
           </select>
           <select onChange={e => setSortBy(e.target.value as any)} value={sortBy} className="p-2 border rounded-lg bg-white text-black">
             <option value="bedNumber">依床號排序</option>

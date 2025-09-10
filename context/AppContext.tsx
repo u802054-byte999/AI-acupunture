@@ -63,7 +63,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
         if (docSnap.exists) {
             // Also clean settings data to be safe.
             const plainSettings = JSON.parse(JSON.stringify(docSnap.data()));
-            dispatch({ type: 'SET_SETTINGS', payload: plainSettings as Settings });
+            const mergedSettings = { ...INITIAL_SETTINGS, ...plainSettings };
+            dispatch({ type: 'SET_SETTINGS', payload: mergedSettings as Settings });
         } else {
             // If settings don't exist, create them with initial values
             // FIX: Switched to v8's `set()` method.

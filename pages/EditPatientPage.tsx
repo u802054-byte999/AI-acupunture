@@ -1,14 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Patient } from '../types';
 import Header from '../components/Header';
-import { TEAMS } from '../constants';
 
 const EditPatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { state, updatePatient } = useAppContext();
   const navigate = useNavigate();
+  const teams = Array.from({ length: state.settings.teamCount || 10 }, (_, i) => i + 1);
   
   const patientToEdit = state.patients.find(p => p.id === id);
 
@@ -77,7 +78,7 @@ const EditPatientPage: React.FC = () => {
         <div className="bg-white p-4 rounded-lg shadow">
           <label className="block text-gray-700">組別</label>
           <select name="team" value={patient.team} onChange={handleChange} className="w-full p-2 border rounded mt-1 bg-white text-black">
-            {TEAMS.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
+            {teams.map(team => <option key={team} value={team}>{`第 ${team} 組`}</option>)}
           </select>
         </div>
         <div className="pt-4">
