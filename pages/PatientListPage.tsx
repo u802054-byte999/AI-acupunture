@@ -158,6 +158,10 @@ const PatientListPage: React.FC = () => {
       setDeletingPatientInfo(null);
     }
   };
+  
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
   const filteredAndSortedPatients = useMemo(() => {
     let patients = [...state.patients];
@@ -204,17 +208,23 @@ const PatientListPage: React.FC = () => {
 
   return (
     <div className="pb-16">
-      <Header title={
-        <span onClick={() => window.location.reload()} className="cursor-pointer hover:text-blue-200 transition-colors">
-          患者管理
-        </span>
-      } actions={
-        <div className="flex items-center space-x-2">
-          <button onClick={() => navigate('/add')} className="py-1 px-3 rounded-md hover:bg-blue-700 text-sm font-semibold">
-             新增患者
+      <Header 
+        title={
+          <button onClick={handleRefresh} className="text-xl font-bold hover:opacity-80 transition-opacity">
+            患者管理
           </button>
-        </div>
-      } />
+        } 
+        actions={
+          <div className="flex items-center space-x-2">
+            <button onClick={() => navigate('/dashboard')} className="py-1 px-3 rounded-md hover:bg-blue-700 text-sm font-semibold">
+               控制台
+            </button>
+            <button onClick={() => navigate('/add')} className="py-1 px-3 rounded-md hover:bg-blue-700 text-sm font-semibold">
+               新增患者
+            </button>
+          </div>
+        } 
+      />
       <div className="p-4">
         <div className="relative">
           <input

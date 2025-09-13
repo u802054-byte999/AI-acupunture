@@ -95,10 +95,6 @@ const DashboardPage: React.FC = () => {
     navigate('/');
   };
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
   if (!settings.teamCount) {
       return (
           <div className="flex justify-center items-center min-h-screen">
@@ -112,16 +108,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div>
       <Header 
-        title={
-          <div className="flex items-center gap-2">
-            <span>控制台</span>
-            <button onClick={handleRefresh} className="p-1 rounded-full hover:bg-blue-700" aria-label="重新整理">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.181-3.183m-4.991-2.695v-2.142A2.25 2.25 0 0018.397 5.92a2.25 2.25 0 00-2.247-2.175 2.25 2.25 0 00-2.248 2.175c0 .622.258 1.18.67 1.568m-4.992-2.695v-2.142A2.25 2.25 0 006.397 5.92a2.25 2.25 0 00-2.247 2.175 2.25 2.25 0 002.248 2.175c0 .622.258 1.18.67 1.568m5.023-4.876c.003.003.006.006.009.009l.01.01.01.01.01.01.009.009a.75.75 0 01-.027 1.049l-2.25 2.25a.75.75 0 01-1.06 0l-2.25-2.25a.75.75 0 011.04-1.079l.56.561a3.75 3.75 0 015.304 0l.56-.561a.75.75 0 011.069.027z" />
-              </svg>
-            </button>
-          </div>
-        } 
+        title="控制台" 
         showBackButton 
       />
       <div className="p-4 space-y-6">

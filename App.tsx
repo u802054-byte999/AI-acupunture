@@ -6,6 +6,7 @@ import AddPatientPage from './pages/AddPatientPage';
 import TreatmentPage from './pages/TreatmentPage';
 import AcupointSelectionPage from './pages/AcupointSelectionPage';
 import EditPatientPage from './pages/EditPatientPage';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<PatientListPage />} />
               <Route path="/add" element={<AddPatientPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/patient/edit/:id" element={<EditPatientPage />} />
               <Route path="/patient/:id" element={<TreatmentPage />} />
               <Route path="/patient/:id/acupoints" element={<AcupointSelectionPage />} />
