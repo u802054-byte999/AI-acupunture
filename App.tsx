@@ -5,7 +5,6 @@ import PatientListPage from './pages/PatientListPage';
 import AddPatientPage from './pages/AddPatientPage';
 import TreatmentPage from './pages/TreatmentPage';
 import AcupointSelectionPage from './pages/AcupointSelectionPage';
-import DashboardPage from './pages/DashboardPage';
 import EditPatientPage from './pages/EditPatientPage';
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
               <Route path="/patient/edit/:id" element={<EditPatientPage />} />
               <Route path="/patient/:id" element={<TreatmentPage />} />
               <Route path="/patient/:id/acupoints" element={<AcupointSelectionPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
             </Routes>
           </HashRouter>
         </div>
